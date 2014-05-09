@@ -2,6 +2,7 @@ require 'dotenv'
 Dotenv.load
 require 'dashing'
 
+
 configure do
   set :auth_token, ENV['YOUR_AUTH_TOKEN']
 

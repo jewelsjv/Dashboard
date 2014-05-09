@@ -1,5 +1,14 @@
+require 'github_api'
+
 current_valuation = 0
 current_karma = 0
+
+SCHEDULER.every '60s', :first_in => 0 do
+    github = Github.new
+    commit_message = github.repos.commits.all('jewelsjv', 'Dashboard').first.commit.message
+    send_event('recent_git_commit',   { text: commit_message} )
+    
+end
 
 SCHEDULER.every '2s' do
   last_valuation = current_valuation
@@ -12,5 +21,6 @@ SCHEDULER.every '2s' do
   send_event('welcome', { title: "Welcome", text: "Random stuff", moreinfo: "The time now is #{the_time}" })
   send_event('karma', { current: current_karma, last: last_karma })
   send_event('synergy',   { value: 100 })
-  send_event('recent_git_commit',   { text: "one step closer to a git commit message"})
+  
 end
+
